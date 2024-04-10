@@ -1,0 +1,5 @@
+#.gitignore
+
+/JuceLibraryCode
+/Builds
+.DS_Store
