@@ -10,6 +10,14 @@
 
 #include <JuceHeader.h>
 
+#define GAIN_ID "gain"
+#define GAIN_NAME "Gain"
+#define MIN_GAIN -60.0f
+#define MAX_GAIN 0.0f
+#define INIT_GAIN -5.0f
+
+using namespace juce;
+
 //==============================================================================
 /**
 */
@@ -50,9 +58,14 @@ public:
     void changeProgramName (int index, const juce::String& newName) override;
 
     //==============================================================================
+    
+    void initializeVoices(int numVoices);
+    
+    //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
+    /*
     //one cycle of the sin function. hold these values in an array
     
     //use this array to access which value of the sin function we're at within the array
@@ -64,13 +77,17 @@ public:
     double increment;
     double amplitude;
     double currentSampleRate;
+     */
+    
+    //for plugin parameters for automation from DAW
+    juce::AudioProcessorValueTreeState treeState;
+    
+    //for efficient parameter layout for APVTS constructor
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
 private:
     
-    void updateFrequency();
-    
-    
-
+    Synthesiser synth;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MooreWavetableAudioProcessor)

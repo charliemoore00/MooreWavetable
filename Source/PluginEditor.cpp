@@ -13,28 +13,40 @@
 MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWavetableAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    
+    gainSliderAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, GAIN_ID, gainSlider);
+    
+    
+    // Load the background image
+    background = juce::ImageCache::getFromMemory(BinaryData::rainbow_cloud_png, BinaryData::rainbow_cloud_pngSize);
+
+    /*
+    juce::File backgroundImageFile('');
+    background = juce::ImageFileFormat::loadFrom(backgroundImageFile);
+     */
+    
     setSize (800, 600);
     
-    //_______________________
-    freqSlider.setSliderStyle(juce::Slider::LinearHorizontal);
-    freqSlider.setTextValueSuffix("Hz");
-    freqSlider.setRange(110, 1500, 1);
-    freqSlider.setValue(440);
-    freqSlider.addListener(this);
-    addAndMakeVisible(freqSlider);
+    gainSlider.setSliderStyle(juce::Slider::LinearHorizontal);
+    gainSlider.setRange(MIN_GAIN, MAX_GAIN);
+    gainSlider.addListener(this);
+    gainSlider.setValue(INIT_GAIN);
+    addAndMakeVisible(gainSlider);
+    
+    /*
 
     freqLabel.setText("Frequency", juce::dontSendNotification);
     freqLabel.attachToComponent(&freqSlider, true);
     
     //______________________
-    ampSlider.setSliderStyle(juce::Slider::LinearHorizontal);
-    ampSlider.setRange(0.0, 1.0, 0.01);
-    ampSlider.addListener(this);
-    ampSlider.setValue(0.2);
-    addAndMakeVisible(ampSlider);
+    gainSlider.setSliderStyle(juce::Slider::LinearHorizontal);
+    gainSlider.setRange(0.0, 1.0, 0.01);
+    gainSlider.addListener(this);
+    gainSlider.setValue(0.2);
+    addAndMakeVisible(gainSlider);
     
-    ampLabel.setText("Amplitude", juce::dontSendNotification);
-    ampLabel.attachToComponent(&ampSlider, true);
+    gainLabel.setText("Amplitude", juce::dontSendNotification);
+    gainLabel.attachToComponent(&gainSlider, true);
     
     
     //add ComboBox components
@@ -46,6 +58,8 @@ MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWav
     //why use .onChange function rather than listener?
     waveShapeMenu.onChange = [this] { waveShapeMenuChanged(); };
     waveShapeMenu.setSelectedId(1);
+     
+     */
 }
 
 MooreWavetableAudioProcessorEditor::~MooreWavetableAudioProcessorEditor()
@@ -55,30 +69,32 @@ MooreWavetableAudioProcessorEditor::~MooreWavetableAudioProcessorEditor()
 //==============================================================================
 void MooreWavetableAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    // Draw the background image
+    if (!background.isNull()) {
+        g.drawImageAt(background, 0, 0);
+    }
 }
 
 void MooreWavetableAudioProcessorEditor::resized()
 {
+    const int labelSpace = 100;
+    const int gainSliderWidth = 200;
+    gainSlider.setBounds(labelSpace, 50, gainSliderWidth, 20);
+    /*
     const int labelSpace = 100;
     freqSlider.setBounds(labelSpace, 80, getWidth()-100, 20);
     ampSlider.setBounds(labelSpace, 110, getWidth()-100, 50);
     
     textLabelShape.setBounds(10, 10, getWidth()-400, 20);
     waveShapeMenu.setBounds(10, 40, 80, 20);
-}
-void MooreWavetableAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
-{
-    if (slider == &freqSlider)
-    {
-        audioProcessor.frequency = freqSlider.getValue();
-        std::cout << audioProcessor.increment << std::endl;
-    } else if (slider == &ampSlider)
-    {
-        audioProcessor.amplitude = ampSlider.getValue();
-    }
+     */
 }
 
+void MooreWavetableAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
+{
+}
+
+/*
 void MooreWavetableAudioProcessorEditor::waveShapeMenuChanged()
 {
     switch (waveShapeMenu.getSelectedId()) {
@@ -91,3 +107,4 @@ void MooreWavetableAudioProcessorEditor::waveShapeMenuChanged()
             break;
     }
 }
+ */

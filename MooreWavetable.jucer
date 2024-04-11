@@ -5,6 +5,16 @@
               companyName="Charlie Moore" pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn">
   <MAINGROUP id="NdewZx" name="MooreWavetable">
     <GROUP id="{8B874872-5D98-3E4C-9855-32F081C50E45}" name="Source">
+      <GROUP id="{0B191AAD-F294-5488-C7A4-547179A7E43B}" name="Assets">
+        <FILE id="l6KXv7" name="rainbow_cloud.png" compile="0" resource="1"
+              file="../../../../../Desktop/rainbow_cloud.png"/>
+        <FILE id="DEdwrH" name="rainbow_cloud.HEIC" compile="0" resource="1"
+              file="../../../../../Desktop/rainbow_cloud.HEIC"/>
+      </GROUP>
+      <FILE id="N7Rpue" name="OscillatorVoice.cpp" compile="1" resource="0"
+            file="Source/OscillatorVoice.cpp"/>
+      <FILE id="nO2X6n" name="OscillatorVoice.h" compile="0" resource="0"
+            file="Source/OscillatorVoice.h"/>
       <FILE id="m39VNC" name="OscillatorSound.cpp" compile="1" resource="0"
             file="Source/OscillatorSound.cpp"/>
       <FILE id="JLzp17" name="OscillatorSound.h" compile="0" resource="0"

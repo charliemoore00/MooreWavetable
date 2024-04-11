@@ -9,3 +9,23 @@
 */
 
 #pragma once
+
+#include <JuceHeader.h>
+
+using namespace juce;
+using namespace std;
+
+class OscillatorSound : public SynthesiserSound
+{
+public:
+    OscillatorSound();
+    ~OscillatorSound();
+    
+    
+    bool appliesToNote(int midiNoteNumber) override;
+    bool appliesToChannel(int midiChannel) override;
+    
+    
+private:
+    
+};

@@ -8,6 +8,8 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "OscillatorSound.h"
+#include "OscillatorVoice.h"
 
 //==============================================================================
 MooreWavetableAudioProcessor::MooreWavetableAudioProcessor()
@@ -19,10 +21,24 @@ MooreWavetableAudioProcessor::MooreWavetableAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+        treeState(*this, nullptr, "PARAMETERS", { 
+            createParameterLayout()
+        })
+
 #endif
 {
+    //add instance of ValueTree to our APVTS so that we can save & load state
+    treeState.state = juce::ValueTree("saved params");
     
+    initializeVoices(1);
+    
+    synth.clearSounds();
+    synth.addSound(new OscillatorSound());
+    
+    
+    
+    /*
     //______________________
     frequency = 440;
     phase = 0;
@@ -35,11 +51,26 @@ MooreWavetableAudioProcessor::MooreWavetableAudioProcessor()
     {
         waveTable.insert(i, sin(2.0 * juce::MathConstants<double>::pi * i / wtSize));
     }
+    */
     
 }
 
 MooreWavetableAudioProcessor::~MooreWavetableAudioProcessor()
 {
+}
+
+//==============================================================================
+juce::AudioProcessorValueTreeState::ParameterLayout MooreWavetableAudioProcessor::createParameterLayout()
+{
+    std::vector <std::unique_ptr <juce::RangedAudioParameter>> params;
+    
+    auto gainParam = std::make_unique<juce::AudioParameterFloat>(GAIN_ID, GAIN_NAME, MIN_GAIN, MAX_GAIN, INIT_GAIN);
+    
+    params.push_back(std::move(gainParam));
+    
+    return { params.begin(), params.end() };
+    
+    
 }
 
 //==============================================================================
@@ -105,9 +136,23 @@ void MooreWavetableAudioProcessor::changeProgramName (int index, const juce::Str
 }
 
 //==============================================================================
+
+void MooreWavetableAudioProcessor::initializeVoices(int numVoices)
+{
+    synth.clearVoices();
+    
+    synth.addVoice(new OscillatorVoice());
+}
+
+//==============================================================================
+
 void MooreWavetableAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    /*
     currentSampleRate = sampleRate;
+     */
+    
+    synth.setCurrentPlaybackSampleRate(sampleRate);
 }
 
 void MooreWavetableAudioProcessor::releaseResources()
@@ -151,6 +196,14 @@ void MooreWavetableAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     
     buffer.clear();
     
+    const int numSamples = buffer.getNumSamples();
+    synth.renderNextBlock(buffer, midiMessages, 0, numSamples);
+    
+    auto sliderGainValue = treeState.getRawParameterValue(GAIN_ID);
+    buffer.applyGain(juce::Decibels::decibelsToGain<float>(*sliderGainValue));
+    
+    /*
+    
     //setting up buffers for stereo channels
     float* const leftSpeaker = buffer.getWritePointer(0, buffer.getSample(0, 0));
     float* const rightSpeaker = buffer.getWritePointer(1, buffer.getSample(1, 0));
@@ -161,6 +214,7 @@ void MooreWavetableAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         rightSpeaker[sample] = waveTable[(int)phase] * amplitude;
         updateFrequency();
     }
+    */
 }
 
 //==============================================================================
@@ -177,15 +231,33 @@ juce::AudioProcessorEditor* MooreWavetableAudioProcessor::createEditor()
 //==============================================================================
 void MooreWavetableAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    //create a dynamic pointer for the new xml for state information
+    std::unique_ptr<juce::XmlElement> xml (treeState.state.createXml());
+    
+    if (xml != nullptr) {
+        copyXmlToBinary(*xml, destData);
+        std::cout << "copied xml to binary";
+    }
+    else
+    {
+        std::cout << "xml is null";
+    }
 }
 
 void MooreWavetableAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    // LOAD STATE FROM XML
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+    
+    //do some error checking for safety
+    if (xmlState.get() != nullptr)
+    {
+        if (xmlState->hasTagName(treeState.state.getType()))
+        {
+            //treeState.replaceState(juce::ValueTree::fromXml(*xmlState)); //this is JUCE implementation
+            treeState.state = juce::ValueTree::fromXml(*xmlState);
+        }
+    }
 }
 
 //==============================================================================
@@ -193,10 +265,4 @@ void MooreWavetableAudioProcessor::setStateInformation (const void* data, int si
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new MooreWavetableAudioProcessor();
-}
-void MooreWavetableAudioProcessor::updateFrequency()
-{
-    increment = frequency * wtSize / currentSampleRate;
-    phase = fmod(phase + increment, wtSize);
-    
 }
