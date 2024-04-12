@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "StyleSheet.h"
 
 //==============================================================================
 /**
@@ -36,7 +37,9 @@ public:
 
 private:
     
+    CustomLNF myCustomLNF;
     juce::Image background;
+    
     
     /*
     
