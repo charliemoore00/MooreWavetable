@@ -20,6 +20,8 @@
 */
 
 #include "OscillatorVoice.h"
+#include <iostream>
+
 
 OscillatorVoice::OscillatorVoice ()
 {
@@ -39,11 +41,21 @@ void OscillatorVoice::channelPressureChanged (int newChannelPressureValue) {}
 
 void OscillatorVoice::setCurrentPlaybackSampleRate (double newRate) {}
 
-void OscillatorVoice::controllerMoved (int controllerNumber, int newControllerValue) {}
+void OscillatorVoice::controllerMoved (int controllerNumber, int newControllerValue) 
+{
+}
 
-void OscillatorVoice::stopNote (float  velocity, bool allowTailOff) {}
+void OscillatorVoice::stopNote (float  velocity, bool allowTailOff) 
+{
+    //DEBUG PRINT
+    std::cout << "stopNote\n";
+}
 
-void OscillatorVoice::startNote (int midiNoteNumber, float velocity, SynthesiserSound *sound, int currentPitchWheelPosition) {}
+void OscillatorVoice::startNote (int midiNoteNumber, float velocity, SynthesiserSound *sound, int currentPitchWheelPosition) 
+{
+    //DEBUG PRINT
+    std::cout << "startNote; note: " << midiNoteNumber << "\n";
+}
 
 bool OscillatorVoice::canPlaySound (SynthesiserSound*) { return true; }
 
@@ -55,6 +67,9 @@ bool OscillatorVoice::isPlayingChannel (int midiChannel) const { return true; }
 
 void OscillatorVoice::renderNextBlock (AudioBuffer<float>  &outputBuffer, int startSample, int numSamples)
 {
+    //DEBUG PRINT
+    //std::cout << "renderNextBlock";
+    
     /// Clear the output buffer.
     outputBuffer.clear();
     

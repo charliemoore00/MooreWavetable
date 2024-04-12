@@ -11,6 +11,8 @@
 #include "OscillatorSound.h"
 #include "OscillatorVoice.h"
 
+#include <iostream>
+
 //==============================================================================
 MooreWavetableAudioProcessor::MooreWavetableAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -141,7 +143,10 @@ void MooreWavetableAudioProcessor::initializeVoices(int numVoices)
 {
     synth.clearVoices();
     
-    synth.addVoice(new OscillatorVoice());
+    for (int i = 0; i < numVoices; i++)
+    {
+        synth.addVoice(new OscillatorVoice());
+    }
 }
 
 //==============================================================================

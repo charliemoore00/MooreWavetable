@@ -30,7 +30,6 @@ MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWav
     gainSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     gainSlider.setRange(MIN_GAIN, MAX_GAIN);
     gainSlider.addListener(this);
-    gainSlider.setValue(INIT_GAIN);
     addAndMakeVisible(gainSlider);
     
     /*
