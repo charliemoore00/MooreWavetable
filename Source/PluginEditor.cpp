@@ -31,8 +31,9 @@ MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWav
     
     setSize (800, 600);
     
-    gainSlider.setSliderStyle(juce::Slider::LinearHorizontal);
+    gainSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
     gainSlider.setRange(MIN_GAIN, MAX_GAIN);
+    gainSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 100, 25);
     gainSlider.addListener(this);
     addAndMakeVisible(gainSlider);
     
@@ -83,7 +84,8 @@ void MooreWavetableAudioProcessorEditor::resized()
 {
     const int labelSpace = 100;
     const int gainSliderWidth = 200;
-    gainSlider.setBounds(labelSpace, 50, gainSliderWidth, 20);
+    //put dial in the middle of the screen
+    gainSlider.setBounds(getWidth()/2 - 100, getHeight()/2 - 100, 200, 200);
     /*
     const int labelSpace = 100;
     freqSlider.setBounds(labelSpace, 80, getWidth()-100, 20);
