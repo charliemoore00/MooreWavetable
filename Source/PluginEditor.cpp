@@ -9,6 +9,8 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+#define PI juce::MathConstants<float>::pi
+
 //==============================================================================
 MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWavetableAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
@@ -18,16 +20,20 @@ MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWav
     gainSliderAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, GAIN_ID, gainSlider);
     
     //set LookAndFeel to our own
-    juce::LookAndFeel::setDefaultLookAndFeel(&CustomLNF);
+    juce::LookAndFeel::setDefaultLookAndFeel(&LNF);
     
+    auto gainRotaryParams = gainSlider.getRotaryParameters();
+    /* customize gainSlider's paramaters*/
+    gainRotaryParams.startAngleRadians = 1.25 * PI;
+    gainRotaryParams.endAngleRadians = 2.75 * PI;
+    gainSlider.setRotaryParameters(gainRotaryParams);
+    
+    /* custom gainSlider colours */
+    gainSlider.setColour(juce::Slider::ColourIds::rotarySliderFillColourId, juce::Colours::orange);
+    gainSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::orange);
     
     // Load the background image
     background = juce::ImageCache::getFromMemory(BinaryData::rainbow_cloud_png, BinaryData::rainbow_cloud_pngSize);
-
-    /*
-    juce::File backgroundImageFile('');
-    background = juce::ImageFileFormat::loadFrom(backgroundImageFile);
-     */
     
     setSize (800, 600);
     

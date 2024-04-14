@@ -37,7 +37,7 @@ public:
 
 private:
     
-    StyleSheet CustomLNF;
+    CustomLNF LNF;
     juce::Image background;
     
     

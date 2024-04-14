@@ -12,7 +12,7 @@
 
 using namespace juce;
 
-void StyleSheet::drawRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPos, const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
+void CustomLNF::drawRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPos, const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
 
 {
     /* color and geometry calculations */
@@ -56,8 +56,8 @@ void StyleSheet::drawRotarySlider(Graphics& g, int x, int y, int width, int heig
     }
     
     /* drawing the thumb */
-    Point<float> thumbPoint (bounds.getCentreX() + arcRadius * std::cos (toAngle - MathConstants<float>::halfPi),
-                             bounds.getCentreY() + arcRadius * std::sin (toAngle - MathConstants<float>::halfPi));
+    Point<float> thumbPoint (bounds.getCentreX() + (arcRadius - 8) * std::cos (toAngle - MathConstants<float>::halfPi),
+                             bounds.getCentreY() + (arcRadius - 8) * std::sin (toAngle - MathConstants<float>::halfPi));
     g.setColour (slider.findColour (Slider::thumbColourId));
     /* making our own line to go from center of dial to thumb */
     float startX = backgroundArc.getBounds().getCentreX();

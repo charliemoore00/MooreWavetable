@@ -194,6 +194,8 @@ bool MooreWavetableAudioProcessor::isBusesLayoutSupported (const BusesLayout& la
 
 void MooreWavetableAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+    /* REMOVE PROCESS BLOCK CODE FOR FASTER GUI TESTING
+     
     juce::ScopedNoDenormals noDenormals;
     //auto totalNumInputChannels  = getTotalNumInputChannels();
     //auto totalNumOutputChannels = getTotalNumOutputChannels();
@@ -220,6 +222,8 @@ void MooreWavetableAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
         updateFrequency();
     }
     */
+    
+    
 }
 
 //==============================================================================
@@ -241,7 +245,6 @@ void MooreWavetableAudioProcessor::getStateInformation (juce::MemoryBlock& destD
     
     if (xml != nullptr) {
         copyXmlToBinary(*xml, destData);
-        std::cout << "copied xml to binary";
     }
     else
     {
