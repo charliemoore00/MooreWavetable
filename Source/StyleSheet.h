@@ -14,7 +14,7 @@
 
 using namespace juce;
 
-class CustomLNF : public LookAndFeel_V4
+class StyleSheet : public LookAndFeel_V4
 {
 public:
     void drawRotarySlider (Graphics &, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &);

@@ -12,21 +12,21 @@
 
 using namespace juce;
 
-void CustomLNF::drawRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPos, const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
+void StyleSheet::drawRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPos, const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
 
 {
+    /* color and geometry calculations */
     auto outline = slider.findColour (Slider::rotarySliderOutlineColourId);
     auto fill    = slider.findColour (Slider::rotarySliderFillColourId);
-
     auto bounds = Rectangle<int> (x, y, width, height).toFloat().reduced (10);
 
+    /* arc drawing setup */
     auto radius = jmin (bounds.getWidth(), bounds.getHeight()) / 2.0f;
     auto toAngle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
-    auto lineW = jmin (8.0f, radius * 0.5f);
+    auto lineW = jmin (8.0f, radius * 0.5f); //lineW = thickness of the arc
     auto arcRadius = radius - lineW * 0.5f;
     
-
-    //Dial background path
+    /* drawing the background arc */
     Path backgroundArc;
     backgroundArc.addCentredArc (bounds.getCentreX(),
                                  bounds.getCentreY(),
@@ -36,15 +36,12 @@ void CustomLNF::drawRotarySlider(Graphics& g, int x, int y, int width, int heigh
                                  rotaryStartAngle,
                                  rotaryEndAngle,
                                  true);
-
     g.setColour (outline);
-    //draw path
-    g.strokePath (backgroundArc, PathStrokeType (lineW, PathStrokeType::curved, PathStrokeType::rounded));
-
+    g.strokePath (backgroundArc, PathStrokeType (lineW, PathStrokeType::curved, PathStrokeType::rounded)); //actual drawing command
     
+    /* drawing the value arc (filled arc) */
     if (slider.isEnabled())
     {
-        //dial FILLED background path
         Path valueArc;
         valueArc.addCentredArc (bounds.getCentreX(),
                                 bounds.getCentreY(),
@@ -54,18 +51,19 @@ void CustomLNF::drawRotarySlider(Graphics& g, int x, int y, int width, int heigh
                                 rotaryStartAngle,
                                 toAngle,
                                 true);
-
         g.setColour (fill);
-        g.strokePath (valueArc, PathStrokeType (lineW, PathStrokeType::curved, PathStrokeType::rounded));
+        g.strokePath (valueArc, PathStrokeType (lineW, PathStrokeType::curved, PathStrokeType::rounded)); //actual drawing command
     }
     
-
-    //the point of the slider (thumb)
-    auto thumbWidth = lineW * 2.0f;
+    /* drawing the thumb */
     Point<float> thumbPoint (bounds.getCentreX() + arcRadius * std::cos (toAngle - MathConstants<float>::halfPi),
                              bounds.getCentreY() + arcRadius * std::sin (toAngle - MathConstants<float>::halfPi));
-
     g.setColour (slider.findColour (Slider::thumbColourId));
-    g.fillEllipse (Rectangle<float> (thumbWidth, thumbWidth).withCentre (thumbPoint));
+    /* making our own line to go from center of dial to thumb */
+    float startX = backgroundArc.getBounds().getCentreX();
+    float startY = backgroundArc.getBounds().getCentreY();
+    float endX = thumbPoint.getX();
+    float endY = thumbPoint.getY();
+    g.drawLine(startX, startY, endX, endY, lineW); //actual drawing command
     
 }

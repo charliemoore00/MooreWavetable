@@ -18,7 +18,7 @@ MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWav
     gainSliderAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, GAIN_ID, gainSlider);
     
     //set LookAndFeel to our own
-    juce::LookAndFeel::setDefaultLookAndFeel(&myCustomLNF);
+    juce::LookAndFeel::setDefaultLookAndFeel(&CustomLNF);
     
     
     // Load the background image
