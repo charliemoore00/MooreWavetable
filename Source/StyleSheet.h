@@ -10,7 +10,13 @@
 
 #pragma once
 
+//#include "PluginEditor.h"
 #include <JuceHeader.h>
+#include "PluginProcessor.h"
+
+#define PI juce::MathConstants<float>::pi
+//#define MIN_GAIN -60.0f
+//#define MAX_GAIN 0.0f
 
 using namespace juce;
 
@@ -18,4 +24,31 @@ class CustomLNF : public LookAndFeel_V4
 {
 public:
     void drawRotarySlider (Graphics &, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &);
+
 };
+
+class GainDial : public Slider
+{
+public:
+    GainDial()
+    {
+        auto gainRotaryParams = getRotaryParameters();
+        // customize gainSlider's paramaters
+        gainRotaryParams.startAngleRadians = 1.25 * PI;
+        gainRotaryParams.endAngleRadians = 2.75 * PI;
+        setRotaryParameters(gainRotaryParams);
+        
+        // custom gainSlider colours
+        setColour(juce::Slider::ColourIds::rotarySliderFillColourId, juce::Colours::white);
+        setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::white);
+        
+        setSliderStyle(juce::Slider::RotaryVerticalDrag);
+        setRange(MIN_GAIN, MAX_GAIN, 0.1f);
+        setTextBoxStyle(juce::Slider::TextBoxBelow, false, 100, 25);
+        setTextBoxIsEditable(true);
+        showTextBox();
+        //setName(GAIN_NAME);
+        
+    }
+};
+

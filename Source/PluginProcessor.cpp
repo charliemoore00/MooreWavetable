@@ -194,7 +194,6 @@ bool MooreWavetableAudioProcessor::isBusesLayoutSupported (const BusesLayout& la
 
 void MooreWavetableAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    /* REMOVE PROCESS BLOCK CODE FOR FASTER GUI TESTING
      
     juce::ScopedNoDenormals noDenormals;
     //auto totalNumInputChannels  = getTotalNumInputChannels();

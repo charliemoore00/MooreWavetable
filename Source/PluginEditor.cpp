@@ -9,8 +9,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-#define PI juce::MathConstants<float>::pi
-
 //==============================================================================
 MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWavetableAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
@@ -21,28 +19,18 @@ MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWav
     
     //set LookAndFeel to our own
     juce::LookAndFeel::setDefaultLookAndFeel(&LNF);
+    //Label* gainTextBox = juce::Slider::LookAndFeelMethods::createSliderTextBox(gainSlider);
     
-    auto gainRotaryParams = gainSlider.getRotaryParameters();
-    /* customize gainSlider's paramaters*/
-    gainRotaryParams.startAngleRadians = 1.25 * PI;
-    gainRotaryParams.endAngleRadians = 2.75 * PI;
-    gainSlider.setRotaryParameters(gainRotaryParams);
-    
-    /* custom gainSlider colours */
-    gainSlider.setColour(juce::Slider::ColourIds::rotarySliderFillColourId, juce::Colours::orange);
-    gainSlider.setColour(juce::Slider::ColourIds::thumbColourId, juce::Colours::orange);
+    gainSlider.setTitle("Gain");
+    gainLabel.setText(GAIN_NAME, juce::dontSendNotification);
+    gainLabel.attachToComponent(&gainSlider, false);
+    addAndMakeVisible(gainSlider);
+    addAndMakeVisible(gainLabel);
     
     // Load the background image
-    background = juce::ImageCache::getFromMemory(BinaryData::rainbow_cloud_png, BinaryData::rainbow_cloud_pngSize);
+    background = juce::ImageCache::getFromMemory(BinaryData::WavetableBackground_png, BinaryData::WavetableBackground_pngSize);
     
     setSize (800, 600);
-    
-    gainSlider.setSliderStyle(juce::Slider::RotaryVerticalDrag);
-    gainSlider.setRange(MIN_GAIN, MAX_GAIN);
-    gainSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 100, 25);
-    gainSlider.addListener(this);
-    addAndMakeVisible(gainSlider);
-    
     /*
 
     freqLabel.setText("Frequency", juce::dontSendNotification);
@@ -82,16 +70,25 @@ void MooreWavetableAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // Draw the background image
     if (!background.isNull()) {
-        g.drawImageAt(background, 0, 0);
+        g.drawImage(background, 0, 0, 800, 600, 0, 0, 1280, 819);
+    }
+    else
+    {
+        std::cout << "background image is null" << "\n";
     }
 }
 
 void MooreWavetableAudioProcessorEditor::resized()
 {
-    const int labelSpace = 100;
-    const int gainSliderWidth = 200;
-    //put dial in the middle of the screen
-    gainSlider.setBounds(getWidth()/2 - 100, getHeight()/2 - 100, 200, 200);
+    // put dial in the middle of the screen
+    int gainWidth = 180;
+    int gainHeight = 180;
+    gainSlider.setBounds(getWidth()/2 - 100, getHeight()/2 - 250, gainWidth, gainHeight);
+    // draw the label right under the dial
+    float gainCenterX = gainSlider.getX() + gainWidth/2;
+    float gainCenterY = gainSlider.getY() + gainHeight/2;
+    gainLabel.setBounds(gainCenterX - 20, gainCenterY + 40, 50, 20);
+    
     /*
     const int labelSpace = 100;
     freqSlider.setBounds(labelSpace, 80, getWidth()-100, 20);

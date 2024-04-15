@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "StyleSheet.h"
+#include <JuceHeader.h>
 
 //==============================================================================
 /**
@@ -26,13 +26,10 @@ public:
     void resized() override;
     void sliderValueChanged(juce::Slider* slider) override;
     
-    
-    //quick way for the editor to access the processor object that created it.
-    //MooreWavetableAudioProcessor& audioProcessor;
     /*
     void waveShapeMenuChanged();
      */
-    juce::Slider gainSlider; //create gain slider
+    GainDial gainSlider; //create custom gain dial
     
 
 private:
@@ -40,11 +37,12 @@ private:
     CustomLNF LNF;
     juce::Image background;
     
+    juce::Label gainLabel;
+    
     
     /*
     
     
-    juce::Label freqLabel, ampLabel;
     
     //create ComboBox components for choosing a wavetype
     juce::Label textLabelShape { {}, "Wave Shape"};

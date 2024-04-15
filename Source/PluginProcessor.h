@@ -14,7 +14,7 @@
 #define GAIN_NAME "Gain"
 #define MIN_GAIN -60.0f
 #define MAX_GAIN 0.0f
-#define INIT_GAIN -5.0f
+#define INIT_GAIN -15.0f
 
 using namespace juce;
 
