@@ -67,3 +67,9 @@ void CustomLNF::drawRotarySlider(Graphics& g, int x, int y, int width, int heigh
     g.drawLine(startX, startY, endX, endY, lineW); //actual drawing command
     
 }
+
+juce::String CustomLNF::getTextFromValue(double value)
+{
+    // return the value formatted to one decimal place
+    return juce::String(value, 1);
+}

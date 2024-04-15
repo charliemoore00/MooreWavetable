@@ -39,22 +39,6 @@ MooreWavetableAudioProcessor::MooreWavetableAudioProcessor()
     synth.addSound(new OscillatorSound());
     
     
-    
-    /*
-    //______________________
-    frequency = 440;
-    phase = 0;
-    wtSize = 1024;
-    amplitude = 0.2;
-    
-    
-    //one cycle of a sin wave
-    for(int i = 0; i < wtSize; i++)
-    {
-        waveTable.insert(i, sin(2.0 * juce::MathConstants<double>::pi * i / wtSize));
-    }
-    */
-    
 }
 
 MooreWavetableAudioProcessor::~MooreWavetableAudioProcessor()
@@ -66,7 +50,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout MooreWavetableAudioProcessor
 {
     std::vector <std::unique_ptr <juce::RangedAudioParameter>> params;
     
-    auto gainParam = std::make_unique<juce::AudioParameterFloat>(GAIN_ID, GAIN_NAME, MIN_GAIN, MAX_GAIN, INIT_GAIN);
+    juce::NormalisableRange gainRange = juce::NormalisableRange<float>(MIN_GAIN, MAX_GAIN, 0.1f);
+    
+    auto gainParam = std::make_unique<juce::AudioParameterFloat>(GAIN_ID, GAIN_NAME, gainRange, INIT_GAIN);
     
     params.push_back(std::move(gainParam));
     

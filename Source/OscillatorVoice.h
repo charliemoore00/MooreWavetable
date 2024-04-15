@@ -22,6 +22,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Scale.h"
+
 using namespace juce;
 using namespace std;
 
@@ -66,7 +68,20 @@ public:
     void  updateAngle   ();
     float getNextSample ();
     
+    EqualTemperamentScale scale;
+    
+    void initializeEG();
+    
+    
 private:
+    
+    //create envelope
+    ADSR EG;
+    
+    //initialize when attack, decay, sustain, release
+    ADSR::Parameters EG_Parameters = {0.01, 0.1, 1.0, 0.2}; //TODO: variables for adsr
+    
+    
     /// A Random object to generate random numbers for the noise oscillator.
     Random noiseGenerator;
     

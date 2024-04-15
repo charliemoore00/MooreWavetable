@@ -32,20 +32,8 @@ MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWav
     
     setSize (800, 600);
     /*
-
-    freqLabel.setText("Frequency", juce::dontSendNotification);
-    freqLabel.attachToComponent(&freqSlider, true);
     
     //______________________
-    gainSlider.setSliderStyle(juce::Slider::LinearHorizontal);
-    gainSlider.setRange(0.0, 1.0, 0.01);
-    gainSlider.addListener(this);
-    gainSlider.setValue(0.2);
-    addAndMakeVisible(gainSlider);
-    
-    gainLabel.setText("Amplitude", juce::dontSendNotification);
-    gainLabel.attachToComponent(&gainSlider, true);
-    
     
     //add ComboBox components
     addAndMakeVisible(textLabelShape);
@@ -90,10 +78,6 @@ void MooreWavetableAudioProcessorEditor::resized()
     gainLabel.setBounds(gainCenterX - 20, gainCenterY + 40, 50, 20);
     
     /*
-    const int labelSpace = 100;
-    freqSlider.setBounds(labelSpace, 80, getWidth()-100, 20);
-    ampSlider.setBounds(labelSpace, 110, getWidth()-100, 50);
-    
     textLabelShape.setBounds(10, 10, getWidth()-400, 20);
     waveShapeMenu.setBounds(10, 40, 80, 20);
      */

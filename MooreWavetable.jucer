@@ -28,6 +28,7 @@
       <FILE id="FAzfeD" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="h3L0xw" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="tq2HNy" name="Scale.h" compile="0" resource="0" file="Source/Scale.h"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>

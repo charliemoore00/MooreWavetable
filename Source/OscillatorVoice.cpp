@@ -25,8 +25,9 @@
 
 OscillatorVoice::OscillatorVoice ()
 {
+    initializeEG();
     prepareNoiseWavetable();
-    setFrequency(220, SAMPLERATE);
+    setFrequency(scale.midiNoteArray[48], SAMPLERATE);
 }
 
 OscillatorVoice::~OscillatorVoice() {}
@@ -45,16 +46,22 @@ void OscillatorVoice::controllerMoved (int controllerNumber, int newControllerVa
 {
 }
 
-void OscillatorVoice::stopNote (float  velocity, bool allowTailOff) 
+void OscillatorVoice::stopNote (float  velocity, bool allowTailOff)
 {
+    allowTailOff = false;
     //DEBUG PRINT
     std::cout << "stopNote\n";
+    EG.noteOff();
 }
 
 void OscillatorVoice::startNote (int midiNoteNumber, float velocity, SynthesiserSound *sound, int currentPitchWheelPosition) 
 {
+    EG.noteOn();
+    float frequency = scale.midiNoteArray[midiNoteNumber];
+    setFrequency(frequency, SAMPLERATE);
+    
     //DEBUG PRINT
-    std::cout << "startNote; note: " << midiNoteNumber << "\n";
+    std::cout << "startNote; frequency: " << frequency << "\n";
 }
 
 bool OscillatorVoice::canPlaySound (SynthesiserSound*) { return true; }
@@ -78,6 +85,9 @@ void OscillatorVoice::renderNextBlock (AudioBuffer<float>  &outputBuffer, int st
     for (int i = 0; i < numSamples; i++)
     {
         float currentSample = getNextSample();
+        
+        float EG_currentSample = EG.getNextSample();
+        currentSample *= EG_currentSample;
         
         /// We then load our random sample into the audio buffer, which is passed along to the PluginProcessor.
         for (int channel = outputBuffer.getNumChannels(); --channel >= 0;) 
@@ -128,6 +138,13 @@ void OscillatorVoice::prepareNoiseWavetable()
 
 //==========================================================================
 
+void OscillatorVoice::initializeEG()
+{
+    EG.setSampleRate(SAMPLERATE);
+    EG.setParameters(EG_Parameters);
+    EG.reset();
+}
+
 void OscillatorVoice::setFrequency (float frequency, float sampleRate)
 {
     auto cyclesPerSample = frequency / sampleRate;
@@ -146,3 +163,5 @@ void OscillatorVoice::updateAngle()
     phase += phaseDelta;
     if (phase >= static_cast<float>(M_2_PI)) phase -= static_cast<float>(M_2_PI);
 }
+
+

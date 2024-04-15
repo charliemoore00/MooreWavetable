@@ -24,6 +24,8 @@ class CustomLNF : public LookAndFeel_V4
 {
 public:
     void drawRotarySlider (Graphics &, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &);
+    
+    String getTextFromValue(double value);
 
 };
 
@@ -47,7 +49,9 @@ public:
         setTextBoxStyle(juce::Slider::TextBoxBelow, false, 100, 25);
         setTextBoxIsEditable(true);
         showTextBox();
-        //setName(GAIN_NAME);
+        setNumDecimalPlacesToDisplay(1);
+        //make value box transparent
+        setColour(juce::Slider::ColourIds::textBoxOutlineColourId, juce::Colours::transparentBlack);
         
     }
 };
