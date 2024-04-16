@@ -48,10 +48,20 @@ void OscillatorVoice::controllerMoved (int controllerNumber, int newControllerVa
 
 void OscillatorVoice::stopNote (float  velocity, bool allowTailOff)
 {
-    allowTailOff = false;
-    //DEBUG PRINT
     std::cout << "stopNote\n";
-    EG.noteOff();
+        if (allowTailOff)
+        {
+            // Only trigger the note-off if it hasn't already been called
+            if (!EG.isActive() || EG.isActive())
+            {
+                EG.noteOff();
+            }
+        }
+        else
+        {
+            // Immediate stop
+            clearCurrentNote();
+        }
 }
 
 void OscillatorVoice::startNote (int midiNoteNumber, float velocity, SynthesiserSound *sound, int currentPitchWheelPosition) 
@@ -74,11 +84,6 @@ bool OscillatorVoice::isPlayingChannel (int midiChannel) const { return true; }
 
 void OscillatorVoice::renderNextBlock (AudioBuffer<float>  &outputBuffer, int startSample, int numSamples)
 {
-    //DEBUG PRINT
-    //std::cout << "renderNextBlock";
-    
-    /// Clear the output buffer.
-    outputBuffer.clear();
     
     /// Dirty sinewave Generator
     //while (--numSamples >= 0)
@@ -99,20 +104,6 @@ void OscillatorVoice::renderNextBlock (AudioBuffer<float>  &outputBuffer, int st
         ++startSample;
     }
     
-    /*
-    /// White noise generator.
-    while (--numSamples >= 0)
-    {
-        /// To create white noise, we need a random value between -1.0 and 1.0. We obtain these values by using the Random class, scaling the value by 2.0, and then subtracting 1.0.
-        float randomSample = (noiseGenerator.nextFloat() * 2.0f) - 1.0f;
-        
-        /// We then load our random sample into the audio buffer, which is passed along to the PluginProcessor.
-        for (int channel = outputBuffer.getNumChannels(); --channel >= 0;) { outputBuffer.addSample(channel, startSample, randomSample); }
-        
-        /// Increment the current sample by 1.
-        ++startSample;
-    }
-    */
 }
 
 void OscillatorVoice::renderNextBlock (AudioBuffer<double>  &outputBuffer, int startSample, int numSamples) {}

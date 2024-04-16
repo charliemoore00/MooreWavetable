@@ -182,9 +182,6 @@ void MooreWavetableAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
 {
      
     juce::ScopedNoDenormals noDenormals;
-    //auto totalNumInputChannels  = getTotalNumInputChannels();
-    //auto totalNumOutputChannels = getTotalNumOutputChannels();
-    //
     
     buffer.clear();
     
@@ -193,20 +190,6 @@ void MooreWavetableAudioProcessor::processBlock (juce::AudioBuffer<float>& buffe
     
     auto sliderGainValue = treeState.getRawParameterValue(GAIN_ID);
     buffer.applyGain(juce::Decibels::decibelsToGain<float>(*sliderGainValue));
-    
-    /*
-    
-    //setting up buffers for stereo channels
-    float* const leftSpeaker = buffer.getWritePointer(0, buffer.getSample(0, 0));
-    float* const rightSpeaker = buffer.getWritePointer(1, buffer.getSample(1, 0));
-    
-    for(int sample = 0; sample < buffer.getNumSamples(); sample++)
-    {
-        leftSpeaker[sample] = waveTable[(int)phase] * amplitude;
-        rightSpeaker[sample] = waveTable[(int)phase] * amplitude;
-        updateFrequency();
-    }
-    */
     
     
 }
