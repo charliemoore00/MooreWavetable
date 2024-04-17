@@ -19,10 +19,21 @@
   ==============================================================================
 */
 
+
+
 #pragma once
 
 #include <JuceHeader.h>
 #include "Scale.h"
+#include "PluginEditor.h"
+
+enum OscillatorMode{
+    OSCILLATOR_MODE_SINE = 1,
+    OSCILLATOR_MODE_SAW,
+    OSCILLATOR_MODE_SQUARE,
+    OSCILLATOR_MODE_TRIANGLE,
+};
+
 
 using namespace juce;
 using namespace std;
@@ -72,8 +83,15 @@ public:
     
     void initializeEG();
     
+    int waveShapeID = 0;
+    
+    
+    
     
 private:
+    
+    //
+    //MooreWavetableAudioProcessorEditor& processorEditor;
     
     //create envelope
     ADSR EG;
@@ -101,5 +119,90 @@ private:
     
     /// ...
     float phaseDelta = 0.0f;
+    
+    
+    
+    //following from mclean's code:
+    OscillatorMode mOscillatorMode = OSCILLATOR_MODE_SINE;
+    double mTwoPi = 2.0 * MathConstants<double>::pi;                      // store 2*pi so we don't have to keep recalculating it
+    double mFrequency = 0.0;                  // the frequency of our oscillator
+    double mPhase = 0.0;                      // where we are in the oscillators cycle
+    double mPhaseIncrement = 0.0;             // amount added to phase every sample
+    double mSampleRate = 44100.0;                 // store the current sample rate
+    double mLevel = 0.5;                      // store the current amplitude
 };
 
+
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+/*
+  ==============================================================================
+
+    OscillatorVoice.h
+    Created: 30 Nov 2018 10:36:36am
+    Author:  Jordan Hochenbaum
+
+  ==============================================================================
+*/
+
+/*
+
+#pragma once
+#include "JuceHeader.h"
+#include "OscillatorSound.h"
+#include "Scale.h"
+//#include "EnvelopeGenerator.h"
+
+enum OscillatorMode{
+    OSCILLATOR_MODE_SINE = 0,
+    OSCILLATOR_MODE_SAW,
+    OSCILLATOR_MODE_SQUARE,
+    OSCILLATOR_MODE_TRIANGLE
+};
+
+class OscillatorVoice   :   public SynthesiserVoice{
+    
+public:
+    OscillatorVoice();
+    ~OscillatorVoice();
+    
+    bool canPlaySound (SynthesiserSound*) override;
+    void startNote (int midiNoteNumber,
+                        float velocity,
+                        SynthesiserSound* sound,
+                        int currentPitchWheelPosition) override;
+    void stopNote (float velocity, bool allowTailOff) override;
+    void pitchWheelMoved (int newPitchWheelValue) override;
+    void controllerMoved (int controllerNumber, int newControllerValue) override;
+    void renderNextBlock (AudioBuffer<float>& outputBuffer,
+                     int startSample,
+                     int numSamples) override;
+    
+    
+    void  setFrequency  (float frequency, float sampleRate);
+    void  updateAngle   ();
+    float getNextSample ();
+    
+    EqualTemperamentScale scale;
+    
+    void initializeEG();
+    
+private:
+    OscillatorMode mOscillatorMode;     // the current waveform type our osc is set to
+    double mTwoPi;                      // store 2*pi so we don't have to keep recalculating it
+    double mFrequency;                  // the frequency of our oscillator
+    double mPhase;                      // where we are in the oscillators cycle
+    double mPhaseIncrement;             // amount added to phase every sample
+    double mSampleRate;                 // store the current sample rate
+    double mLevel;                      // store the current amplitude
+    
+    juce::ADSR EG;
+    int SAMPLERATE   = 44100;
+    
+};
+
+
+*/

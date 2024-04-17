@@ -27,10 +27,16 @@ public:
     void sliderValueChanged(juce::Slider* slider) override;
     
     //==============================================================================
-    /*
+    
     void waveShapeMenuChanged();
-     */
+     
     GainDial gainSlider; //create custom gain dial
+    
+    //create ComboBox components for choosing a wavetype
+    juce::Label textLabelShape { {}, "Wave Shape"};
+    std::string waveShape;
+    juce::Font textFont { 12.0f};
+    juce::ComboBox waveShapeMenu;
     
 
 private:
@@ -44,13 +50,9 @@ private:
     
     
     
-    /*
-    //create ComboBox components for choosing a wavetype
-    juce::Label textLabelShape { {}, "Wave Shape"};
-    std::string waveShape;
-    juce::Font textFont { 12.0f};
-    juce::ComboBox waveShapeMenu;
-     */
+    
+    
+    
      
     
     // This reference is provided as a quick way for your editor to
