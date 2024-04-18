@@ -51,10 +51,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout MooreWavetableAudioProcessor
     std::vector <std::unique_ptr <juce::RangedAudioParameter>> params;
     
     juce::NormalisableRange gainRange = juce::NormalisableRange<float>(MIN_GAIN, MAX_GAIN, 0.1f);
-    
     auto gainParam = std::make_unique<juce::AudioParameterFloat>(GAIN_ID, GAIN_NAME, gainRange, INIT_GAIN);
     
+    juce::StringArray choices{"1", "2", "3", "4"};
+    auto waveShapeParam = std::make_unique<juce::AudioParameterChoice>(WAVE_SHAPE_ID, WAVE_SHAPE_NAME, choices, 1, "Wave Shape");
+    
     params.push_back(std::move(gainParam));
+    params.push_back(std::move(waveShapeParam));
     
     return { params.begin(), params.end() };
     
@@ -131,7 +134,7 @@ void MooreWavetableAudioProcessor::initializeVoices(int numVoices)
     
     for (int i = 0; i < numVoices; i++)
     {
-        synth.addVoice(new OscillatorVoice());
+        synth.addVoice(new OscillatorVoice(*this));
     }
 }
 

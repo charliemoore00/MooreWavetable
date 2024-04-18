@@ -16,6 +16,10 @@
 #define MAX_GAIN 0.0f
 #define INIT_GAIN -15.0f
 
+#define WAVE_SHAPE_ID "wave shape"
+#define WAVE_SHAPE_NAME "Wave Shape"
+#define INIT_SHAPE 0
+
 using namespace juce;
 
 //==============================================================================

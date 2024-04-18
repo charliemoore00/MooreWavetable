@@ -23,7 +23,11 @@ using namespace juce;
 class CustomLNF : public LookAndFeel_V4
 {
 public:
-    void drawRotarySlider (Graphics &, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &);
+    void drawRotarySlider (Graphics &, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider &) override;
+    
+    void drawComboBox (Graphics&, int width, int height, bool isButtonDown,
+                       int buttonX, int buttonY, int buttonW, int buttonH,
+                       ComboBox&) override;
     
     String getTextFromValue(double value);
 

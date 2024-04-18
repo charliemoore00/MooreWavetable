@@ -26,13 +26,7 @@
 #include <JuceHeader.h>
 #include "Scale.h"
 #include "PluginEditor.h"
-
-enum OscillatorMode{
-    OSCILLATOR_MODE_SINE = 1,
-    OSCILLATOR_MODE_SAW,
-    OSCILLATOR_MODE_SQUARE,
-    OSCILLATOR_MODE_TRIANGLE,
-};
+#include "PluginProcessor.h"
 
 
 using namespace juce;
@@ -43,8 +37,9 @@ using namespace std;
 class OscillatorVoice : public SynthesiserVoice
 {
 public:
-    OscillatorVoice();
+    OscillatorVoice(MooreWavetableAudioProcessor& processor);
    ~OscillatorVoice();
+    
     
     //======================================================================
     
@@ -83,7 +78,7 @@ public:
     
     void initializeEG();
     
-    int waveShapeID = 0;
+    int waveShapeID = 1;
     
     
     
@@ -92,6 +87,7 @@ private:
     
     //
     //MooreWavetableAudioProcessorEditor& processorEditor;
+    MooreWavetableAudioProcessor& audioProcessor;
     
     //create envelope
     ADSR EG;
@@ -123,7 +119,7 @@ private:
     
     
     //following from mclean's code:
-    OscillatorMode mOscillatorMode = OSCILLATOR_MODE_SINE;
+    int mOscillatorMode = 1;
     double mTwoPi = 2.0 * MathConstants<double>::pi;                      // store 2*pi so we don't have to keep recalculating it
     double mFrequency = 0.0;                  // the frequency of our oscillator
     double mPhase = 0.0;                      // where we are in the oscillators cycle

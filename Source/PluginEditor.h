@@ -28,15 +28,21 @@ public:
     
     //==============================================================================
     
-    void waveShapeMenuChanged();
+    //void waveShapeMenuChanged();
      
     GainDial gainSlider; //create custom gain dial
     
     //create ComboBox components for choosing a wavetype
     juce::Label textLabelShape { {}, "Wave Shape"};
     std::string waveShape;
-    juce::Font textFont { 12.0f};
+    juce::Font textFont { 14.0f};
     juce::ComboBox waveShapeMenu;
+    
+    
+    
+    // This reference is provided as a quick way for your editor to
+    // access the processor object that created it.
+    MooreWavetableAudioProcessor& audioProcessor;
     
 
 private:
@@ -47,19 +53,8 @@ private:
     juce::Label gainLabel;
     
     
-    
-    
-    
-    
-    
-    
-     
-    
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
-    MooreWavetableAudioProcessor& audioProcessor;
-    
     std::unique_ptr <juce::AudioProcessorValueTreeState::SliderAttachment> gainSliderAttach;
+    std::unique_ptr <juce::AudioProcessorValueTreeState::ComboBoxAttachment> waveShapeMenuAttach;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MooreWavetableAudioProcessorEditor)
 };

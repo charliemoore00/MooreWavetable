@@ -16,6 +16,7 @@ MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWav
     
     
     gainSliderAttach = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, GAIN_ID, gainSlider);
+    waveShapeMenuAttach = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(audioProcessor.treeState, WAVE_SHAPE_ID, waveShapeMenu);
     
     //set LookAndFeel to our own
     juce::LookAndFeel::setDefaultLookAndFeel(&LNF);
@@ -45,8 +46,18 @@ MooreWavetableAudioProcessorEditor::MooreWavetableAudioProcessorEditor (MooreWav
     waveShapeMenu.addItem("Triangle", 4);
     
     //why use .onChange function rather than listener?
-    waveShapeMenu.onChange = [this] { waveShapeMenuChanged(); };
-    waveShapeMenu.setSelectedId(0);
+    //waveShapeMenu.onChange = [this] { waveShapeMenuChanged(); };
+    waveShapeMenu.setSelectedId(1);
+    
+    //set the text colour to white
+    auto waveColour = juce::Colours::white;
+    textLabelShape.setColour(juce::Label::textColourId, waveColour);
+    waveShapeMenu.setColour(juce::ComboBox::textColourId, waveColour);
+    waveShapeMenu.setColour(juce::ComboBox::outlineColourId, waveColour);
+    waveShapeMenu.setColour(juce::ComboBox::arrowColourId, waveColour);
+    waveShapeMenu.setColour(juce::ComboBox::backgroundColourId, juce::Colours::transparentBlack);
+
+    
      
      
 }
@@ -80,9 +91,10 @@ void MooreWavetableAudioProcessorEditor::resized()
     float gainCenterY = gainSlider.getY() + gainHeight/2;
     gainLabel.setBounds(gainCenterX - 20, gainCenterY + 40, 50, 20);
     
-
-    textLabelShape.setBounds(10, 10, getWidth()-400, 20);
-    waveShapeMenu.setBounds(10, 40, 80, 20);
+    int boxWidth = 100;
+    int boxHeight = 24;
+    textLabelShape.setBounds(getWidth()/2 - boxWidth/2, getHeight()/2+128, boxWidth, boxHeight);
+    waveShapeMenu.setBounds(getWidth()/2 - boxWidth/2, getHeight()/2 + 150, boxWidth, boxHeight);
 
 }
 
@@ -90,13 +102,14 @@ void MooreWavetableAudioProcessorEditor::sliderValueChanged(juce::Slider* slider
 {
 }
 
-
+/*
 void MooreWavetableAudioProcessorEditor::waveShapeMenuChanged()
 {
     switch (waveShapeMenu.getSelectedId()) {
         case 1:
             //set wave shape to sine
             waveShape = "sine";
+            
             break;
             
         case 2:
@@ -119,3 +132,4 @@ void MooreWavetableAudioProcessorEditor::waveShapeMenuChanged()
     }
 }
 
+*/
